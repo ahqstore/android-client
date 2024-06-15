@@ -1,0 +1,11 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
+.app-main {
+  @apply flex w-[100vw] h-[100vh] flex-col;
+}
+
+.container {
+  @apply h-full w-full p-3 overflow-y-scroll overflow-x-hidden;
+}
