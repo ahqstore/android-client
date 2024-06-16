@@ -173,6 +173,7 @@ jobs:
 
           pnpm install
           pnpm build
+          pnpm tauri init
           pnpm tauri android build -v
 
       - uses: r0adkll/sign-android-release@v1
