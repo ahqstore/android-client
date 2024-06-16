@@ -122,7 +122,7 @@ jobs:
           sudo rm -rf ./sdk/cmdline-tools-test
           sudo chmod 777 -R ./sdk
 
-          export JAVA_HOME="./jbr/br_jcef-21.0.3-linux-x64-b480.1"
+          export JAVA_HOME="./jbr/jbr_jcef-21.0.3-linux-x64-b480.1"
           export ANDROID_HOME="./sdk"
 
           export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
@@ -175,7 +175,7 @@ jobs:
           export ANDROID_HOME="$CURRENT_DIR/sdk/"
           export ANDROID_SDK_ROOT="$CURRENT_DIR/sdk/"
           export NDK_HOME="$CURRENT_DIR/sdk/ndk/27.0.11902837/"
-          export JAVA_HOME="$CURRENT_DIR/jbr/br_jcef-21.0.3-linux-x64-b480.1/"
+          export JAVA_HOME="$CURRENT_DIR/jbr/jbr_jcef-21.0.3-linux-x64-b480.1/"
 
           sudo chmod 777 -R ./src-tauri
 
