@@ -15,7 +15,9 @@ class PingArgs {
 
 @TauriPlugin
 class ExamplePlugin(private val activity: Activity): Plugin(activity) {
-    private val implementation = Example()
+    override fun load(webView: WebView) {
+
+    }
 
     @Command
     fun ping(invoke: Invoke) {
