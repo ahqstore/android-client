@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace = "com.plugin.ahqstore"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
