@@ -174,7 +174,7 @@ jobs:
           pnpm install
           pnpm tauri android build
 
-      - uses: r0adkll/sign-android-release@v1
+      - uses: r0adkll/sign-android-release@master
         name: Sign app APK
         id: sign_app
         with:
@@ -183,6 +183,9 @@ jobs:
           alias: ahqstore
           keyStorePassword: ${{ secrets.K_PASSWORD }}
           keyPassword: ${{ secrets.K_PASSWORD }}
+        env:
+          ANDROID_HOME: /home/runner/work/android-client/android-client/sdk
+          BUILD_TOOLS_VERSION: 35.0.0-rc4
 
       - name: As Artifact
         uses: actions/upload-artifact@v4
