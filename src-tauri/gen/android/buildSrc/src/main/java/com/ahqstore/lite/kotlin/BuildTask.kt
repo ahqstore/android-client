@@ -16,7 +16,7 @@ open class BuildTask : DefaultTask() {
 
     @TaskAction
     fun assemble() {
-        val executable = """pnpm""";
+        val executable = if (release) "bun" else "pnpm";
         try {
             runTauriCli(executable)
         } catch (e: Exception) {
