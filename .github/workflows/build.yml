@@ -127,7 +127,7 @@ jobs:
 
           export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 
-          echo "yes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes" | sdkmanager "platform-tools" "platforms;android-34" "ndk;27.0.11902837" "build-tools;35.0.0-rc4"
+          echo "yes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\nyes\n" | sdkmanager "platform-tools" "platforms;android-34" "ndk;27.0.11902837" "build-tools;35.0.0-rc4"
 
           export NDK_HOME="$ANDROID_HOME/ndk/27.0.11902837"
 
