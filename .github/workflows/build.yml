@@ -106,9 +106,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
 
-      - name: Setup BUN
-        uses: oven-sh/setup-bun@v1
-
       - name: Download & Install Android Build Things
         run: |
           sudo curl -L -o ./jbr.tar.gz https://cache-redirector.jetbrains.com/intellij-jbr/jbr_jcef-17.0.11-linux-x64-b1207.24.tar.gz
@@ -175,9 +172,7 @@ jobs:
           sudo chmod 777 -R ./src-tauri
 
           pnpm install
-          pnpm build
-          pnpm tauri android init
-          pnpm tauri android build -v
+          pnpm tauri android build
 
       - uses: r0adkll/sign-android-release@v1
         name: Sign app APK

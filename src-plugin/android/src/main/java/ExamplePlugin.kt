@@ -15,16 +15,12 @@ class PingArgs {
 
 @TauriPlugin
 class ExamplePlugin(private val activity: Activity): Plugin(activity) {
-    override fun load(webView: WebView) {
-
-    }
 
     @Command
     fun ping(invoke: Invoke) {
         val args = invoke.parseArgs(PingArgs::class.java)
 
         val ret = JSObject()
-        ret.put("value", implementation.pong(args.value ?: "default value :("))
         invoke.resolve(ret)
     }
 }
