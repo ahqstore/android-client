@@ -28,7 +28,7 @@ dependencies = [
 
 [[package]]
 name = "ahqstore-android"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
  "serde",
  "serde_json",
@@ -3284,7 +3284,7 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-ahqstore"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
  "serde",
  "tauri",

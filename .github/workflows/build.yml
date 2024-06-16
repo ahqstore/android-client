@@ -181,7 +181,7 @@ jobs:
         with:
           releaseDirectory: /home/runner/work/android-client/android-client/src-tauri/gen/android/app/build/outputs/apk/universal/release
           signingKeyBase64: ${{ secrets.KEY_FILE }}
-          alias: ${{ secrets.ALIAS }}
+          alias: ahqstore
           keyStorePassword: ${{ secrets.K_PASSWORD }}
           keyPassword: ${{ secrets.K_PASSWORD }}
         env:
