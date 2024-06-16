@@ -44,7 +44,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: !alpha ? version : `alpha-${alphaId}`,
-              name: alpha ? `Student Performance Analyzer Alpha v${version}-next-${alphaId}` : `Student Performance Analyzer v${version}`,
+              name: alpha ? `AHQ Store Client Alpha v${version}-next-${alphaId}` : `AHQ Store Client v${version}`,
               body: String(fs.readFileSync("./latest.md")),
               draft: true,
               prerelease: alpha
