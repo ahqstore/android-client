@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import "./app.css"
 import BottomNavBar from "./bottom-nav"
