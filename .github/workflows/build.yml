@@ -173,7 +173,7 @@ jobs:
 
           pnpm install
           pnpm build
-          pnpm tauri android build
+          pnpm tauri android build -v
 
       - uses: r0adkll/sign-android-release@v1
         name: Sign app APK
