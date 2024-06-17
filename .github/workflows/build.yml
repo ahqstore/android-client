@@ -161,6 +161,15 @@ jobs:
       - name: Install Rust Targets
         run: rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
 
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          key: android
+          save-always: true
+          path: |
+            sdk
+            src-tauri/target
+
       - name: Build Tauri App (Android)
         run: |
           export CURRENT_DIR=$(pwd)
@@ -193,12 +202,12 @@ jobs:
           path: /home/runner/work/android-client/android-client/src-tauri/gen/android/app/build/outputs/apk/universal/release/*
 
       - name: Upload to Release
-        uses: ahqsoftwares/upload-release-asset@main
+        uses: shogo82148/actions-upload-release-asset@v1
         with:
-          id: ${{ needs.create-release.outputs.release_id }}
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
           asset_path: ${{ steps.sign_app.outputs.signedReleaseFile }}
           asset_name: app.apk
-          asset_content_type: application/vnd.android.package-archive
+          asset_content_type: application/octet-stream
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
