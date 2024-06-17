@@ -193,7 +193,7 @@ jobs:
           path: /home/runner/work/android-client/android-client/src-tauri/gen/android/app/build/outputs/apk/universal/release/*
 
       - name: Upload to Release
-        uses: ahqsoftwares/upload-release-asset@v22
+        uses: ahqsoftwares/upload-release-asset@v23
         with:
           id: ${{ needs.create-release.outputs.release_id }}
           asset_path: ${{ steps.sign_app.outputs.signedReleaseFile }}
