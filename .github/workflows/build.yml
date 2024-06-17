@@ -100,6 +100,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          key: android
+          save-always: true
+          path: |
+            sdk
+            src-tauri/target
+
       - name: Install Android Requirements
         run: |
           sudo dpkg --add-architecture i386
@@ -160,15 +169,6 @@ jobs:
 
       - name: Install Rust Targets
         run: rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
-
-      - name: Cache
-        uses: actions/cache@v4
-        with:
-          key: android
-          save-always: true
-          path: |
-            sdk
-            src-tauri/target
 
       - name: Build Tauri App (Android)
         run: |
