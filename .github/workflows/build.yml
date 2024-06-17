@@ -208,6 +208,7 @@ jobs:
           asset_path: ${{ steps.sign_app.outputs.signedReleaseFile }}
           asset_name: app.apk
           asset_content_type: application/octet-stream
+          github_token: ${{ secrets.GITHUB_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
