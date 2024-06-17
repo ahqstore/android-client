@@ -85,9 +85,9 @@ jobs:
             try {
               data = JSON.parse(data);
 
-              return data.upload_url.replace("{?name,label}", "");
+              return data.upload_url;
             } catch (_) {
-              return data.upload_url.replace("{?name,label}", "");
+              return data.upload_url;
             }
 
   publish-android:
