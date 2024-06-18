@@ -11,6 +11,26 @@
     "image:default",
     "resources:default",
     "menu:default",
-    "tray:default"
+    "tray:default",
+    {
+      "identifier": "http:default",
+      "allow": [
+        {
+          "url": "https://github.com/ahqsoftwares/ahq-store-data/*"
+        },
+        {
+          "url": "https://github.com/ahqsoftwares/tauri-ahq-store/releases/*"
+        },
+        {
+          "url": "https://api.github.com/*"
+        },
+        {
+          "url": "https://rawcdn.githack.com/*"
+        },
+        {
+          "url": "https://github.com/login/*"
+        }
+      ]
+    }
   ]
 }

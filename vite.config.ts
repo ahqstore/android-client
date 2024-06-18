@@ -18,6 +18,9 @@ export default defineConfig(async () => ({
     port: 1420,
     strictPort: true,
     host: mobile ? "0.0.0.0" : false,
+    warmup: {
+      clientFiles: ['./src/components/*.tsx'],
+    },
     hmr: mobile
       ? {
         protocol: "ws",
@@ -30,4 +33,7 @@ export default defineConfig(async () => ({
       ignored: ["**/src-tauri/**"],
     },
   },
+  build: {
+    chunkSizeWarningLimit: 102400
+  }
 }));

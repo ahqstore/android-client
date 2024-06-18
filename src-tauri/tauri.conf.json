@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "identifier": "com.ahqstore.lite",
   "build": {
-    "beforeDevCommand": "pnpm dev",
+    "beforeDevCommand": "",
     "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "pnpm build",
     "frontendDist": "../dist"

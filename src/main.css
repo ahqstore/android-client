@@ -3,6 +3,15 @@
 
 @tailwind utilities;
 
+::-webkit-scrollbar {
+  display: none !important;
+  width: 0px !important;
+}
+
+* {
+  scrollbar-color: auto !important;
+}
+
 body {
   background: var(--md-sys-color-background);
   color: var(--md-sys-color-on-background);

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@tauri-apps/api": "2.0.0-beta.13",
+    "framer-motion": "^11.2.10",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1"
@@ -19,6 +20,7 @@
     "@material/material-color-utilities": "^0.2.7",
     "@material/web": "^1.5.0",
     "@tauri-apps/cli": "2.0.0-beta.20",
+    "@tauri-apps/plugin-http": "2.0.0-beta.6",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
