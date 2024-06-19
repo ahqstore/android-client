@@ -117,7 +117,7 @@ jobs:
 
       - name: Download & Install Android Build Things
         run: |
-          sudo curl -L -o ./jbr.tar.gz https://cache-redirector.jetbrains.com/intellij-jbr/jbr_jcef-17.0.11-linux-x64-b1207.24.tar.gz
+          sudo curl -L -o ./jbr.tar.gz https://cache-redirector.jetbrains.com/intellij-jbr/jbr_jcef-17.0.11-linux-x64-b1312.2.tar.gz
           sudo mkdir jbr
           sudo tar -xvf ./jbr.tar.gz -C ./jbr
           sudo chmod 777 -R ./jbr
@@ -131,7 +131,7 @@ jobs:
           sudo rm -rf ./sdk/cmdline-tools-test
           sudo chmod 777 -R ./sdk
 
-          export JAVA_HOME="./jbr/jbr_jcef-17.0.11-linux-x64-b1207.24"
+          export JAVA_HOME="./jbr/jbr_jcef-17.0.11-linux-x64-b1312.2"
           export ANDROID_HOME="./sdk"
 
           export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
@@ -176,7 +176,7 @@ jobs:
           export ANDROID_HOME="$CURRENT_DIR/sdk/"
           export ANDROID_SDK_ROOT="$CURRENT_DIR/sdk/"
           export NDK_HOME="$CURRENT_DIR/sdk/ndk/27.0.11902837/"
-          export JAVA_HOME="$CURRENT_DIR/jbr/jbr_jcef-17.0.11-linux-x64-b1207.24/"
+          export JAVA_HOME="$CURRENT_DIR/jbr/jbr_jcef-17.0.11-linux-x64-b1312.2/"
 
           sudo chmod 777 -R ./src-tauri
 
