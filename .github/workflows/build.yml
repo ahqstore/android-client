@@ -181,7 +181,7 @@ jobs:
           sudo chmod 777 -R ./src-tauri
 
           pnpm install
-          pnpm tauri android build
+          pnpm tauri android build --apk --target aarch64,armv7,x86_64
 
       - uses: r0adkll/sign-android-release@master
         name: Sign app APK
