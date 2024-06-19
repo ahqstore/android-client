@@ -4,10 +4,6 @@ import fetch from "./http";
 
 let sha = "";
 
-const totalUrl = "https://rawcdn.githack.com/ahqstore/data/{sha}/db/total";
-const homeUrl = "https://rawcdn.githack.com/ahqstore/data/{sha}/db/home.json";
-const appUrl =
-  "https://rawcdn.githack.com/ahqstore/data/{sha}/db/apps/{app}.json";
 const mapUrl =
   "https://rawcdn.githack.com/ahqstore/data/{sha}/db/map/{id}.json";
 const searchUrl =
