@@ -1,3 +1,4 @@
+import { invoke } from "@tauri-apps/api/core";
 import { ApplicationData } from "./fetchApps";
 import fetch from "./http";
 
@@ -15,44 +16,15 @@ const devUserUrl =
   "https://rawcdn.githack.com/ahqstore/data/{sha}/db/info/{dev}.json";
 
 export async function getSha() {
-  const { ok, data } = await fetch("https://api.github.com/repos/ahqstore/data/commits", {
-    method: "GET"
-  });
-
-  console.log(ok, JSON.stringify(data));
-  if (!ok) {
-    throw new Error("");
-  }
-
-  sha = data[0].sha;
+  sha = await invoke<string>("get_commit");
 }
 
 export async function get_total() {
-  if (sha == "") {
-    get_sha();
-  }
-
-  const { data } = await fetch(totalUrl.replace("{sha}", sha), {
-    method: "GET"
-  });
-
-  return Number(data);
+  return await invoke<number>("get_total");
 }
 
 export async function get_home() {
-  if (sha == "") {
-    get_sha();
-  }
-
-  const url = homeUrl.replace("{sha}", sha);
-
-  const { data } = await fetch(url, {
-    method: "GET",
-    headers: {
-      "ngrok-skip-browser-warning": "true"
-    }
-  });
-
+  const data = await invoke<[string, string[]][]>("get_home");
   return data;
 }
 
@@ -92,11 +64,11 @@ export async function get_map<T>(): Promise<T> {
   for (let i = 1; i <= total; i++) {
     const url = mapUrl.replace("{sha}", sha).replace("{id}", i.toString());
 
-    const val = await fetch(url, {
+    const { data } = await fetch(url, {
       method: "GET"
     });
 
-    map = { ...map, ...val };
+    map = { ...map, ...data };
   }
 
   return map as unknown as any as T;
@@ -107,15 +79,9 @@ export function get_sha() {
 }
 
 export async function get_app(app: string): Promise<ApplicationData> {
-  const { data } = await fetch(
-    appUrl.replace("{sha}", sha).replace("{app}", app),
-    {
-      method: "GET",
-      headers: {
-        "ngrok-skip-browser-warning": "true"
-      }
-    },
-  );
+  const data = await invoke<ApplicationData>("get_app", {
+    app_id: app
+  });
 
   const appData: ApplicationData = {
     ...data,

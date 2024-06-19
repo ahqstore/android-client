@@ -9,10 +9,12 @@ exclude = ["/examples", "/webview-dist", "/webview-src", "/node_modules"]
 links = "tauri-plugin-ahqstore"
 
 [dependencies]
-tauri = { version = "2.0.0-beta.22" }
+tauri = { git = "https://github.com/tauri-apps/tauri", version = "2.0.0-beta.22" }
 serde = "1.0"
 thiserror = "1.0"
 
 [build-dependencies]
-tauri-plugin = { version = "2.0.0-beta.17", features = ["build"] }
-tauri-build = "2.0.0-beta.17"
+tauri-plugin = { git = "https://github.com/tauri-apps/tauri", features = [
+  "build",
+] }
+tauri-build = { git = "https://github.com/tauri-apps/tauri" }

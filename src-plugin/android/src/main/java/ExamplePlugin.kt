@@ -1,5 +1,7 @@
 package com.plugin.ahqstore
 
+import android.webkit.WebView
+
 import android.app.Activity
 import app.tauri.annotation.Command
 import app.tauri.annotation.InvokeArg
@@ -15,12 +17,17 @@ class PingArgs {
 
 @TauriPlugin
 class ExamplePlugin(private val activity: Activity): Plugin(activity) {
+  @Command
+  override fun load(webkit: WebView) {
+    
+  }
 
-    @Command
-    fun ping(invoke: Invoke) {
-        val args = invoke.parseArgs(PingArgs::class.java)
 
-        val ret = JSObject()
-        invoke.resolve(ret)
-    }
+  @Command
+  fun ping(invoke: Invoke) {
+    val args = invoke.parseArgs(PingArgs::class.java)
+
+    val ret = JSObject()
+    invoke.resolve(ret)
+  }
 }

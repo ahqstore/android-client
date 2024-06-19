@@ -1,13 +1,12 @@
-import { ClientOptions, fetch as tauriFetch } from "@tauri-apps/plugin-http";
+import { ClientOptions } from "@tauri-apps/plugin-http";
 
 export default async function fetch(
   url: string,
   config: (RequestInit & ClientOptions) | undefined,
 ) {
-  return await tauriFetch(url, {
+  return await window.fetch(url, {
     ...(config || {}),
     method: config?.method || "GET",
-    connectTimeout: 100_000,
     headers: {
       "User-Agent": "AHQ Store",
       ...(config?.headers || {}),

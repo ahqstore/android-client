@@ -33,6 +33,7 @@ export default function App() {
       setApps(await get_home());
       setMap(await get_map<{ [key: string]: Object }>());
 
+      console.log("Load");
       await delay(500);
       setLoad(true);
     })()
