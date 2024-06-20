@@ -8,8 +8,11 @@ use runtime_cache::Val;
 pub mod cache;
 pub mod db;
 mod runtime_cache;
+mod routes;
 
 static mut COMMIT: Option<String> = None;
+
+pub use routes::*;
 
 pub static TOTAL_URL: &'static str = "https://rawcdn.githack.com/ahqstore/data/{sha}/db/total";
 pub static HOME_URL: &'static str = "https://rawcdn.githack.com/ahqstore/data/{sha}/db/home.json";
@@ -29,6 +32,7 @@ lazy_static! {
     .unwrap();
 }
 
+#[macro_export]
 macro_rules! cache {
     ($($x:tt)*) => {
       runtime_cache::get($($x)*)
@@ -85,26 +89,24 @@ pub async fn get_total() -> Option<usize> {
     .ok()
 }
 
-#[tauri::command(async)]
-pub fn get_app(app_id: &str) -> Option<&'static AHQStoreApplication> {
+#[tauri::command]
+pub async fn get_app(app_id: &str) -> Result<&'static AHQStoreApplication, ()> {
   let cache_id = format!("APP_{app_id}");
   let c = cache!(&cache_id);
 
   if let Some(Val::App(x)) = c {
-    return Some(x);
+    return Ok(x);
   }
 
-  let app: AHQStoreApplication = tauri::async_runtime::block_on(async {
-    CLIENT.get(APP_URL
+  let app: AHQStoreApplication = CLIENT.get(APP_URL
       .replace("{sha}", get_commit().await)
       .replace("{app}", &app_id)
     ).send()
     .await
-    .ok()?
+    .map_or_else(|_| Err(()), |x| Ok(x))?
     .json()
     .await
-    .ok()
-  })?;
+    .map_or_else(|_| Err(()), |x| Ok(x))?;
 
   runtime_cache::set(cache_id, Val::App(app));
 
@@ -112,10 +114,10 @@ pub fn get_app(app_id: &str) -> Option<&'static AHQStoreApplication> {
   let c = cache!(&cache_id);
 
   if let Some(Val::App(x)) = c {
-    return Some(x);
+    return Ok(x);
   }
     
-  None
+  Err(())
 }
 
 #[tauri::command]

@@ -1,5 +1,5 @@
 * {
-  @apply font-sans;
+  @apply font-sans transition-all;
 }
 
 .app-main {

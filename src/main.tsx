@@ -21,8 +21,6 @@ import App from "./app";
 
 const theme = themeFromSourceColor(argbFromHex('#000000'), []);
 
-console.log(JSON.stringify(theme, null, 2));
-
 const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
 applyTheme(theme, { target: document.body, dark: systemDark });

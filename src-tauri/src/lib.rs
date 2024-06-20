@@ -1,7 +1,11 @@
 #[macro_use]
 mod api;
 
+#[macro_use]
+mod utils;
+
 use api::*;
+use utils::*;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -16,7 +20,9 @@ pub fn run() {
             });
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![get_total, get_commit, get_app, get_home])
+        .invoke_handler(tauri::generate_handler![
+            get_total, get_map, get_search, get_commit, get_app, get_home
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

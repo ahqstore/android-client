@@ -4,7 +4,7 @@ use tauri::{App, Manager};
 
 use super::runtime_cache::Val;
 
-static mut CACHE_DIR: Option<String> = None;
+pub static mut CACHE_DIR: Option<String> = None;
 
 macro_rules! from_str {
   ($($x:tt)*) => {
@@ -18,8 +18,13 @@ pub fn init_cache(app: &App) {
   let s = s.to_str().unwrap();
   let s=s.to_string();
 
+  let _ = fs::create_dir_all(&s);
+
+  let apk_dir = format!("{}/apk", &s);
+  let _ = fs::remove_dir_all(&apk_dir);
+  let _ = fs::create_dir_all(apk_dir);
+
   unsafe {
-    let _ = fs::create_dir_all(&s);
     CACHE_DIR = Some(s);
   }
 }

@@ -1,4 +1,5 @@
 import { MdLibraryBooks, MdSettings } from "react-icons/md";
+import { IoMdRefresh } from "react-icons/io";
 import { RiAppsFill } from "react-icons/ri";
 
 interface Props {
@@ -21,6 +22,10 @@ export default function BottomNavBar({ setPage }: Props) {
           <MdSettings size="1em" />
           Settings
         </md-primary-tab>
+        {import.meta.env.DEV && <md-primary-tab onClick={() => { window.location.reload() }}>
+          <IoMdRefresh size="1em" />
+          Reload
+        </md-primary-tab>}
       </md-tabs>
     </div>
   );

@@ -5,11 +5,18 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import "./home.css";
+import Grid from "./grid";
 
-export default function HomePage() {
+interface Props {
+  home: [string, string[]][]
+}
+
+export default function HomePage({ home }: Props) {
   const [rawSearch, ss] = useState("");
 
   const [a, setS] = useState("");
+
+  console.log(JSON.stringify(home));
 
   return (
     <>
@@ -31,6 +38,14 @@ export default function HomePage() {
         </motion.label>
       </motion.form>
       <h1>{a}</h1>
+      <div className="flex flex-col w-full mt-3">
+        {a == "" && home.map(([title, apps], i) => <>
+          <h1>{title}</h1>
+          <div key={i} className="grid grid-cols-2 w-[100%]">
+            {apps.map((app, i) => <Grid id={app} key={`app${i}`} />)}
+          </div>
+        </>)}
+      </div>
     </>
   )
 }

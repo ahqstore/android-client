@@ -15,7 +15,7 @@ pub fn init<R: Runtime, C: DeserializeOwned>(
   api: PluginApi<R, C>,
 ) -> crate::Result<StorePlugin<R>> {
   #[cfg(target_os = "android")]
-  let handle = api.register_android_plugin(PLUGIN_IDENTIFIER, "ExamplePlugin")?;
+  let handle = api.register_android_plugin(PLUGIN_IDENTIFIER, "AHQStore")?;
   
   Ok(StorePlugin(handle))
 }

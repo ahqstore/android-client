@@ -8,5 +8,7 @@ export default function Loading() {
 
     <motion.span className="loading-spinner loading loading-lg mt-[20vh]" />
     <motion.span className="mt-2 font-sans">Loading...</motion.span>
+
+    {import.meta.env.DEV && <button className="btn btn-ghost btn-sm mt-2" onClick={() => window.location.reload()}>Reload</button>}
   </motion.div>;
 }
