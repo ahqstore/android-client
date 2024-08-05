@@ -55,7 +55,7 @@ export default function App() {
         {load && <><motion.div className="container">
           {data}
         </motion.div>
-          <BottomNavBar {...{ setPage }} /> </>}
+          <BottomNavBar {...{ page, setPage }} /> </>}
       </AnimatePresence>
       <AnimatePresence>
         {!load && <Loading />}

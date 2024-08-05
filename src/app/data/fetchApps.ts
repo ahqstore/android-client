@@ -33,6 +33,7 @@ interface appData {
   install: {
     win32: unknown | undefined;
     linux: unknown | undefined;
+    android: unknown | undefined;
   };
   displayImages: Str[];
   description: Str;

@@ -1,5 +1,5 @@
 import { BiArrowBack } from "react-icons/bi";
-import { BsSearch } from "react-icons/bs";
+import { BsArrowRight, BsSearch } from "react-icons/bs";
 import { useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
@@ -38,11 +38,16 @@ export default function HomePage({ home }: Props) {
         </motion.label>
       </motion.form>
       <h1>{a}</h1>
-      <div className="flex flex-col w-full mt-3">
+      <div className="flex flex-col w-full mt-3 overflow-scroll" style={{ "height": "calc(100% - 3.2rem)" }} >
         {a == "" && home.map(([title, apps], i) => <>
-          <h1>{title}</h1>
-          <div key={i} className="grid grid-cols-2 w-[100%]">
-            {apps.map((app, i) => <Grid id={app} key={`app${i}`} />)}
+          <div className="flex flex-row text-center items-center">
+            {title}
+            <button className="btn bg-base-300 btn-sm border-[1px] border-base-content btn-circle ml-auto">
+              <BsArrowRight size={"1em"} />
+            </button>
+          </div>
+          <div key={i} className="grid grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] w-[100%]">
+            {apps.map((app, ind) => ind < 2 ? <Grid id={app} key={`app${ind}`} /> : <></>)}
           </div>
         </>)}
       </div>

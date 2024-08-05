@@ -36,7 +36,7 @@ class RustWebView(context: Context, val initScripts: Array<String>): WebView(con
           isDocumentStartScriptEnabled = false
         }
 
-        this.settings.mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+        
     }
 
     fun loadUrlMainThread(url: String) {

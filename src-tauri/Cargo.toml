@@ -12,12 +12,10 @@ name = "ahqstore_android_lib"
 crate-type = ["lib", "cdylib", "staticlib"]
 
 [build-dependencies]
-tauri-build = { git = "https://github.com/tauri-apps/tauri", features = [] }
+tauri-build = { version = "2.0.0-rc.0", features = [] }
 
 [dependencies]
-tauri = { git = "https://github.com/tauri-apps/tauri", features = [
-  "rustls-tls",
-] }
+tauri = { version = "2.0.0-rc.0", features = ["rustls-tls"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", default-features = false, features = ["alloc"] }
 tauri-plugin-ahqstore = { path = "../src-plugin" }

@@ -1,4 +1,5 @@
 # Logs
+.pnp.cjs
 logs
 *.log
 npm-debug.log*

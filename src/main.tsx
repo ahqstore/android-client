@@ -1,29 +1,21 @@
-import { argbFromHex, themeFromSourceColor, applyTheme } from "@material/material-color-utilities";
-
 import "./main.css";
-
-import "@material/web/all.js";
-import "@material/web/all.d.ts";
+import "mdui/mdui.css";
 
 declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      [key: string]: {
-        [key: string]: any
-      }
-    }
+  interface Window {
+    backCall: () => boolean
+    installCode: (code: 30) => undefined
   }
 }
 
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./app";
+import { setColorScheme } from "mdui";
 
-const theme = themeFromSourceColor(argbFromHex('#000000'), []);
-
-const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-applyTheme(theme, { target: document.body, dark: systemDark });
+setColorScheme(
+  localStorage.getItem("theme-color") || "#ad4e28"
+);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
