@@ -1,5 +1,7 @@
+import 'mdui/mdui.css';
+import 'mdui';
+
 import "./main.css";
-import "mdui/mdui.css";
 
 declare global {
   interface Window {
@@ -8,10 +10,18 @@ declare global {
   }
 }
 
+declare module "react/jsx-runtime" {
+  namespace JSX {
+    interface IntrinsicElements {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./app";
-import { setColorScheme } from "mdui";
+import { setColorScheme } from "mdui/functions/setColorScheme";
 
 setColorScheme(
   localStorage.getItem("theme-color") || "#ad4e28"
