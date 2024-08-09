@@ -39,7 +39,7 @@ impl<R: Runtime> AHQStorePlugin<R> {
   pub fn get_android_build(&self) -> crate::Result<AndroidData> {
     self
       .0
-      .run_mobile_plugin::<()>("getAndroidBuild", ())
+      .run_mobile_plugin("getAndroidBuild", ())
       .map_err(Into::into)
   }
 }
