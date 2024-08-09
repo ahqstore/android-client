@@ -31,10 +31,19 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            get_total, get_map, get_search, get_commit, get_app, get_home, load_apk
+            get_total, get_map, get_search, get_commit, get_app, get_home, load_apk, get_andy_build
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+#[tauri::command(async)]
+fn get_andy_build<R: Runtime>() -> (u64, String) {
+    let ahqstore: &AHQStorePlugin<R> = app.store_plugin();
+
+    let info = ahqstore.get_android_build().unwrap();
+
+    (info.sdk, info.release)
 }
 
 #[tauri::command(async)]

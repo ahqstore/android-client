@@ -15,3 +15,9 @@ pub struct AppData {
   pub version: String,
   pub json: String
 }
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct AndroidData {
+  pub sdk: u64,
+  pub release: String
+}

@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["media"],
+  darkMode: "class",
   content: [
     "./index.html",
     "./pages/**/*.{ts,tsx}",
@@ -51,6 +51,9 @@ module.exports = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        mdui: {
+          100: "rgba(var(--mdui-color-background))",
         },
       },
       borderRadius: {},

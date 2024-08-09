@@ -22,10 +22,15 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./app";
 import { setColorScheme } from "mdui/functions/setColorScheme";
+import { applyTheme } from './utils/theme';
 
-setColorScheme(
-  localStorage.getItem("theme-color") || "#ad4e28"
-);
+applyTheme();
+
+setInterval(() => {
+  setColorScheme(
+    localStorage.getItem("theme-color") || "#ad4e28"
+  );
+}, 500);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

@@ -35,4 +35,11 @@ impl<R: Runtime> AHQStorePlugin<R> {
       .run_mobile_plugin("getInstalledPkgInfo", app)
       .map_err(Into::into)
   }
+
+  pub fn get_android_build(&self) -> crate::Result<AndroidData> {
+    self
+      .0
+      .run_mobile_plugin::<()>("getAndroidBuild", ())
+      .map_err(Into::into)
+  }
 }

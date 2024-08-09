@@ -10,6 +10,7 @@
 
 * {
   scrollbar-color: auto !important;
+  @apply select-none;
 }
 
 body {

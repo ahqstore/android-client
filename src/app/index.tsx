@@ -6,6 +6,7 @@ import BottomNavBar from "./bottom-nav"
 import HomePage from "./pages/home";
 import { get_app, get_home, get_map, getSha } from "./data";
 import Loading from "./pages/loading";
+import SettingsPage from "./pages/settings";
 
 
 
@@ -19,6 +20,8 @@ export default function App() {
     switch (page) {
       case "home":
         return <HomePage home={apps} />;
+      case "settings":
+        return <SettingsPage />;
       default:
         return <>{page}</>;
     }
@@ -51,12 +54,12 @@ export default function App() {
 
   return (
     <div className="app-main">
-      <AnimatePresence>
-        {load && <><motion.div className="container">
+      {load &&
+        <div className="container">
           {data}
-        </motion.div>
-          <BottomNavBar {...{ page, setPage }} /> </>}
-      </AnimatePresence>
+          <BottomNavBar {...{ page, setPage }} />
+        </div>
+      }
       <AnimatePresence>
         {!load && <Loading />}
       </AnimatePresence>

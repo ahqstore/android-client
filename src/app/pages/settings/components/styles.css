@@ -1,0 +1,15 @@
+.component {
+  @apply flex w-full bg-[rgb(var(--mdui-color-surface-bright))] p-2 rounded-lg;
+}
+
+.cmp-box {
+  @apply flex flex-col mr-auto;
+}
+
+.component h1 {
+  @apply flex space-x-1 items-center font-bold;
+}
+
+.component h2 {
+  @apply text-sm;
+}

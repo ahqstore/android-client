@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
+import android.os.Build
 import androidx.core.content.FileProvider
 
 import app.tauri.annotation.Command
@@ -37,6 +38,16 @@ import kotlin.coroutines.cancellation.CancellationException
 @TauriPlugin
 class AHQStore(private val activity: Activity): Plugin(activity) {
   private var pkgInstaller: PackageInstaller? = null
+
+  @Command
+  fun getAndroidBuild(invoke: Invoke) {
+    val ret = JSObject()
+
+    ret.put("sdk", Build.VERSION.SDK_INT)
+    ret.put("release", Build.VERSION.RELEASE)
+
+    invoke.resolve(ret)
+  }
 
   @Command
   fun getInstalledPkgInfo(invoke: Invoke) {
