@@ -200,7 +200,7 @@ jobs:
         name: Sign app APK
         id: sign_app
         with:
-          releaseDirectory: /home/runner/work/android-client/android-client/src-tauri/gen/android/app/build/outputs/apk/${{ matrix.suffix }}/release
+          releaseDirectory: /home/runner/work/android-client/android-client/src-tauri/gen/android/app/build/outputs/apk/universal/release
           signingKeyBase64: ${{ secrets.KEY_FILE }}
           alias: ahqstore
           keyStorePassword: ${{ secrets.K_PASSWORD }}
@@ -212,7 +212,7 @@ jobs:
       - name: As Artifact
         uses: actions/upload-artifact@v4
         with:
-          path: /home/runner/work/android-client/android-client/src-tauri/gen/android/app/build/outputs/apk/${{ matrix.suffix }}/release/*
+          path: /home/runner/work/android-client/android-client/src-tauri/gen/android/app/build/outputs/apk/universal/release/*
 
       - name: Upload to Release
         uses: shogo82148/actions-upload-release-asset@v1
