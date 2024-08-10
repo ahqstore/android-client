@@ -12,7 +12,7 @@ import SettingsPage from "./pages/settings";
 
 export default function App() {
   const [page, setPage] = useState("home");
-  const [load, setLoad] = useState(false),
+  const [load, setLoad] = useState<string | boolean>(false),
     [apps, setApps] = useState<[string, string[]][]>([]),
     [_map, setMap] = useState<{ [key: string]: Object }>({});
 
@@ -33,35 +33,41 @@ export default function App() {
     (async () => {
       await delay(500);
 
+      setLoad("Fetching SHA...");
       await getSha();
 
+      setLoad("Getting search...");
       const search = await get_home();
       console.log(typeof (search), search);
 
       for (let i = 0; i < search.length; i++) {
         for (let j = 0; j < search[i][1].length; j++) {
+          setLoad(`Caching ${search[i][1][j].substring(0, 16)}...`);
           await get_app(search[i][1][j]);
         }
       }
 
       setApps(search);
+
+      setLoad("Fetching map...");
       setMap(await get_map<{ [key: string]: Object }>());
 
-      await delay(500);
+      setLoad(false);
+      await delay(2500);
       setLoad(true);
     })()
   }, []);
 
   return (
     <div className="app-main">
-      {load &&
+      {load == true &&
         <div className="container">
           {data}
           <BottomNavBar {...{ page, setPage }} />
         </div>
       }
       <AnimatePresence>
-        {!load && <Loading />}
+        {load != true && <Loading load={load} />}
       </AnimatePresence>
     </div>
   )

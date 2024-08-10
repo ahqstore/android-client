@@ -10,7 +10,7 @@ function BuildInfo({ img, title, desc, width }: { img: string, title: string, de
   return <div className="component mt-3">
     <div className="cmp-box">
       <h1>
-        <img src={img} width={width || "5%"} />
+        <img src={img} width={width || "20px"} height={width || "20px"} />
         <span>{title}</span>
       </h1>
       <h2>{desc}</h2>
@@ -51,12 +51,12 @@ export default function SettingsPage() {
 
     <BuildInfo title="Frontend: React" desc="The library for web and native user interfaces" img="/react.webp" />
 
-    <BuildInfo title="Icons: React Icons" desc="Thanks for the icons!" img="/ri.svg" width="10%" />
+    <BuildInfo title="Icons: React Icons" desc="Thanks for the icons!" img="/ri.svg" />
 
-    <BuildInfo title="UI: MDUI" desc="Meterial Design User Interface" img="/md.svg" width="6%" />
+    <BuildInfo title="UI: MDUI" desc="Meterial Design User Interface" img="/md.svg" />
 
-    <BuildInfo title="UI: TailwindCSS" desc="A set of reusuable components" img="/tw.png" width="6%" />
+    <BuildInfo title="UI: TailwindCSS" desc="A set of reusuable components" img="/tw.png" />
 
-    <BuildInfo title="UI: DaisyUI" desc="The most popular component library for Tailwind CSS" img="/dui.png" width="6%" />
+    <BuildInfo title="UI: DaisyUI" desc="The most popular component library for Tailwind CSS" img="/dui.png" />
   </div>;
 }
