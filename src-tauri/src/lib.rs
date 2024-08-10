@@ -11,6 +11,8 @@ use tauri::WebviewWindow;
 
 use tauri_plugin_ahqstore::{AHQStorePluginExt, AHQStorePlugin, AppInstallResponse};
 
+use std::env::consts::ARCH;
+
 static mut WINDOW: Option<WebviewWindow> = None;
 
 pub fn get_window() -> &'static WebviewWindow {
@@ -31,10 +33,15 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            get_total, get_map, get_search, get_commit, get_app, get_home, load_apk, get_andy_build
+            get_total, get_map, get_search, get_commit, get_app, get_home, load_apk, get_andy_build, get_os_info
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+#[tauri::command(async)]
+fn get_os_info() -> (&'static str, String) {
+    (ARCH, std::fs::read_to_string("/proc/cpuinfo").unwrap())
 }
 
 #[tauri::command(async)]

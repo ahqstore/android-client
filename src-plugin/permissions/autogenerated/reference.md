@@ -11,25 +11,12 @@
 <tr>
 <td>
 
-`ahqstore:allow-execute`
+`ahqstore:allow-hello`
 
 </td>
 <td>
 
-Enables the execute command without any pre-configured scope.
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-`ahqstore:deny-execute`
-
-</td>
-<td>
-
-Denies the execute command without any pre-configured scope.
+Enables the hello command without any pre-configured scope.
 
 </td>
 </tr>
@@ -37,25 +24,12 @@ Denies the execute command without any pre-configured scope.
 <tr>
 <td>
 
-`ahqstore:allow-ping`
+`ahqstore:deny-hello`
 
 </td>
 <td>
 
-Enables the ping command without any pre-configured scope.
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-`ahqstore:deny-ping`
-
-</td>
-<td>
-
-Denies the ping command without any pre-configured scope.
+Denies the hello command without any pre-configured scope.
 
 </td>
 </tr>

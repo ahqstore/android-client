@@ -1,8 +1,6 @@
-import { ClientOptions } from "@tauri-apps/plugin-http";
-
 export default async function fetch(
   url: string,
-  config: (RequestInit & ClientOptions) | undefined,
+  config: RequestInit | undefined,
 ) {
   return await window.fetch(url, {
     ...(config || {}),

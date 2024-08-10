@@ -2,7 +2,7 @@
 name = "tauri-plugin-ahqstore"
 version = "0.0.1"
 authors = ["AHQ"]
-description = ""
+description = "The AHQ Store Core Plugin"
 edition = "2021"
 rust-version = "1.70"
 exclude = ["/examples", "/webview-dist", "/webview-src", "/node_modules"]

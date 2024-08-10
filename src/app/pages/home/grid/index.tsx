@@ -6,7 +6,7 @@ export default function Grid({ id }: { id: string }) {
   const [app, setApp] = useState<ApplicationData>();
 
   useEffect(() => {
-    get_app(id).then(setApp);
+    (async () => get_app(id).then(setApp))();
   }, [id]);
 
   const supported = app?.install.android != undefined;

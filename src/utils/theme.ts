@@ -3,7 +3,7 @@ export const prefersDark = () => {
 }
 
 export const applyTheme = () => {
-  const theme = localStorage.theme;
+  const theme = localStorage.theme || "mdui-theme-auto";
 
   const html = document.querySelector("html");
 

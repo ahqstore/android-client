@@ -7,8 +7,7 @@ import HomePage from "./pages/home";
 import { get_app, get_home, get_map, getSha } from "./data";
 import Loading from "./pages/loading";
 import SettingsPage from "./pages/settings";
-
-
+import { getAboutInfomation } from "../utils/android";
 
 export default function App() {
   const [page, setPage] = useState("home");
@@ -31,6 +30,7 @@ export default function App() {
   useEffect(() => {
     const delay = (ms: number) => new Promise((r) => setTimeout(() => r(undefined), ms));
     (async () => {
+      await getAboutInfomation();
       await delay(500);
 
       setLoad("Fetching SHA...");
