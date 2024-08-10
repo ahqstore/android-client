@@ -116,7 +116,7 @@ jobs:
       - name: Cache
         uses: actions/cache@v4
         with:
-          key: android
+          key: build_${{ matrix.suffix }}
           save-always: true
           path: |
             sdk
