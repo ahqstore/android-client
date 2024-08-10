@@ -38,7 +38,7 @@ pub fn run() {
 }
 
 #[tauri::command(async)]
-fn get_andy_build<R: Runtime>() -> (u64, String) {
+fn get_andy_build<R: Runtime>(app: AppHandle<R>) -> (u64, String) {
     let ahqstore: &AHQStorePlugin<R> = app.store_plugin();
 
     let info = ahqstore.get_android_build().unwrap();

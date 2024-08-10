@@ -4,6 +4,7 @@ import { DarkLight } from "./components/dark";
 
 import "./components/styles.css"
 import { useEffect, useState } from "react";
+import { getAndroidData } from "../../../utils/android";
 
 function BuildInfo({ img, title, desc, width }: { img: string, title: string, desc: string, width?: string }) {
   return <div className="component mt-3">
@@ -20,10 +21,12 @@ function BuildInfo({ img, title, desc, width }: { img: string, title: string, de
 export default function SettingsPage() {
   const [ver, setVersion] = useState("");
   const [tauriVer, setTVersion] = useState("");
+  const [[sdk, release], setAn] = useState([0, ""]);
 
   useEffect(() => {
     getVersion().then(setVersion).catch(setVersion);
     getTauriVersion().then(setTVersion).catch(setTVersion);
+    getAndroidData().then(setAn);
   });
 
   return <div className="flex flex-col items-center w-full h-full">
@@ -40,7 +43,7 @@ export default function SettingsPage() {
 
     <BuildInfo title="Build" desc={`AHQ Store v${ver}`} img="/icon.png" />
 
-    <BuildInfo title="SDK Version" desc={`Android SDK \${sdk} - Release \${release}`} img="/android.png" />
+    <BuildInfo title="SDK Version" desc={`Android SDK ${sdk} - Release ${release}`} img="/android.png" />
 
     <h2 className="mt-2 text-sm font-extrabold mr-auto">Frameworks that made it possible</h2>
 

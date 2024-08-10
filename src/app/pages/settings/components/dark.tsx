@@ -22,13 +22,13 @@ export function DarkLight({ title, desc }: ColorPickerProps) {
       <h2>{desc}</h2>
     </div>
     <div>
-      <select className="select select-sm bg-mdui-100 w-full max-w-xs" onChange={(v) => {
+      <select className="select select-sm bg-mdui-100 w-full max-w-xs" defaultValue={localStorage.theme || "mdui-theme-auto"} onChange={(v) => {
         const val = v.target.value;
         setTheme(val);
       }}>
         {[["mdui-theme-dark", "Dark"], ["mdui-theme-light", "Light"], ["mdui-theme-auto", "Device"]]
           .map(([id, label]) => (
-            <option value={id} key={id} selected={(localStorage.theme || "mdui-theme-auto") == id}>{label}</option>
+            <option value={id} key={id}>{label}</option>
           ))}
       </select>
     </div>

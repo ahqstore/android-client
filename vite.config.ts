@@ -7,7 +7,6 @@ const host = process.env.TAURI_DEV_HOST;
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [react()],
-
   clearScreen: false,
   server: {
     port: 1420,
@@ -29,6 +28,6 @@ export default defineConfig(async () => ({
     },
   },
   build: {
-    chunkSizeWarningLimit: 102400
+    chunkSizeWarningLimit: 102400,
   }
 }));
