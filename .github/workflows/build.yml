@@ -213,6 +213,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: /home/runner/work/android-client/android-client/src-tauri/gen/android/app/build/outputs/apk/universal/release/*
+          name: ${{ matrix.suffix }}
 
       - name: Upload to Release
         uses: shogo82148/actions-upload-release-asset@v1
