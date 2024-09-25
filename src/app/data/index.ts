@@ -16,6 +16,7 @@ export async function get_total() {
 
 export async function get_home() {
   const data = await invoke<[string, string[]][]>("get_home");
+  console.log("Get Home", data);
   return data;
 }
 
@@ -34,11 +35,38 @@ export function get_sha() {
 export async function get_app(app: string): Promise<ApplicationData> {
   const data = await invoke<ApplicationData>("get_app", {
     appId: app
+  }).catch((e) => {
+    console.log(e);
+
+    return {
+      app_page: "",
+      appDisplayName: "Unknown Application",
+      authorId: "%null",
+      appId: "",
+      description: "Unknown",
+      appShortcutName: "",
+      displayImages: [],
+      downloadUrls: {},
+      install: {
+        free: () => { },
+      },
+      license_or_tos: "",
+      releaseTagName: "",
+      repo: {
+        author: "",
+        free: () => { },
+        name: "",
+        repo: ""
+      },
+      resources: {},
+      site: "",
+      source: "",
+      version: ""
+    } as ApplicationData
   });
 
   const appData: ApplicationData = {
-    ...data,
-    icon: `data:image;base64,${data.icon}`,
+    ...data
   };
 
   return appData;

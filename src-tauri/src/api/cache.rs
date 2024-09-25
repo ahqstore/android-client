@@ -46,7 +46,7 @@ pub fn clear_cache() {
   let _ = fs::create_dir_all(&cache);
 }
 
-pub fn set_cache(key: &str, pre: u8, data: Vec<u8>) -> Option<()> {
+pub fn set_cache(key: &str, pre: u8, data: &[u8]) -> Option<()> {
   let cache = unsafe {
     CACHE_DIR.as_ref().unwrap()
   };

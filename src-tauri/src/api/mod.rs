@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use lazy_static::lazy_static;
-use ahqstore_types::{AHQStoreApplication, Commit};
+use ahqstore_types::{internet, AHQStoreApplication, Commit, APP_ASSET_URL};
 use reqwest::{Client, ClientBuilder};
 use runtime_cache::Val;
 
@@ -13,17 +13,6 @@ mod routes;
 static mut COMMIT: Option<String> = None;
 
 pub use routes::*;
-
-pub static TOTAL_URL: &'static str = "https://rawcdn.githack.com/ahqstore/data/{sha}/db/total";
-pub static HOME_URL: &'static str = "https://rawcdn.githack.com/ahqstore/data/{sha}/db/home.json";
-pub static APP_URL: &'static str =
-  "https://rawcdn.githack.com/ahqstore/data/{sha}/db/apps/{app}.json";
-pub static MAP_URL: &'static str =
-  "https://rawcdn.githack.com/ahqstore/data/{sha}/db/map/{id}.json";
-pub static SEARCH_URL: &'static str =
-  "https://rawcdn.githack.com/ahqstore/data/{sha}/db/search/{id}.json";
-pub static DEV_USER_URL: &'static str =
-  "https://rawcdn.githack.com/ahqstore/data/{sha}/db/info/{dev}.json";
 
 lazy_static! {
   static ref CLIENT: Client = ClientBuilder::new()
@@ -40,15 +29,7 @@ macro_rules! cache {
 }
 
 pub async fn init() {
-  let mut c: Vec<Commit> = CLIENT.get("https://api.github.com/repos/ahqstore/data/commits")
-    .send()
-    .await
-    .unwrap()
-    .json()
-    .await
-    .unwrap();
-
-  let sha = c.remove(0).sha;
+  let sha: String = internet::get_commit(None).await.unwrap();
 
   let cache = cache::commit();
 
@@ -80,13 +61,7 @@ pub async fn get_commit() -> &'static str {
 pub async fn get_total() -> Option<usize> {
   let sha = get_commit().await;
 
-  CLIENT.get(TOTAL_URL.replace("{sha}", sha))
-    .send()
-    .await
-    .ok()?
-    .json()
-    .await
-    .ok()
+  internet::get_total_maps(sha).await
 }
 
 #[tauri::command]
@@ -98,15 +73,7 @@ pub async fn get_app(app_id: &str) -> Result<&'static AHQStoreApplication, ()> {
     return Ok(x);
   }
 
-  let app: AHQStoreApplication = CLIENT.get(APP_URL
-      .replace("{sha}", get_commit().await)
-      .replace("{app}", &app_id)
-    ).send()
-    .await
-    .map_or_else(|_| Err(()), |x| Ok(x))?
-    .json()
-    .await
-    .map_or_else(|_| Err(()), |x| Ok(x))?;
+  let app = internet::get_app(get_commit().await, app_id).await.map_or_else(|| Err(()), |x| Ok(x))?;
 
   runtime_cache::set(cache_id, Val::App(app));
 
@@ -121,6 +88,34 @@ pub async fn get_app(app_id: &str) -> Result<&'static AHQStoreApplication, ()> {
 }
 
 #[tauri::command]
+pub async fn get_app_asset_url(app_id: &str, asset: u8) -> Result<String, ()> {
+  Ok(APP_ASSET_URL.replace("{COMMIT}", get_commit().await).replace("{APP_ID}", app_id).replace("{ASSET}", &asset.to_string()))
+}
+
+#[tauri::command]
+pub async fn get_app_asset(app_id: &str, asset: u8) -> Result<&'static Vec<u8>, ()> {
+  let key = format!("APP_ASSET_{app_id}_{asset}");
+  let c = cache!(&key);
+
+  if let Some(Val::Asset(x)) = c {
+    return Ok(x);
+  }
+
+  let asset_data = internet::get_app_asset(&get_commit().await, app_id, &asset.to_string()).await.map_or_else(|| Err(()), |x| Ok(x))?;
+
+  runtime_cache::set(key, Val::Asset(asset_data));
+
+  let key = format!("APP_ASSET_{app_id}_{asset}");
+  let c = cache!(&key);
+
+  if let Some(Val::Asset(x)) = c {
+    return Ok(x);
+  }
+
+  Err(())
+}
+
+#[tauri::command]
 pub async fn get_home() -> Option<&'static Vec<(String, Vec<String>)>> {
   let home = "HOME_DATA";
   let c = cache!(&home);
@@ -129,15 +124,7 @@ pub async fn get_home() -> Option<&'static Vec<(String, Vec<String>)>> {
     return Some(x);
   }
 
-  let app = 
-    CLIENT.get(HOME_URL
-      .replace("{sha}", get_commit().await)
-    ).send()
-    .await
-    .ok()?
-    .json()
-    .await
-    .ok()?;
+  let app = internet::get_home(&get_commit().await).await?;
 
   runtime_cache::set(home.into(), Val::Home(app));
 

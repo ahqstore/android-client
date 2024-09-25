@@ -1,8 +1,9 @@
 use std::collections::HashMap;
 
-use crate::{cache, get_commit, get_total, MAP_URL, SEARCH_URL};
+use crate::{cache, get_commit, get_total};
+use ahqstore_types::internet;
 
-use super::{runtime_cache::{self, Map, Search, SearchS, Val}, CLIENT};
+use super::runtime_cache::{self, Map, Search, Val};
 
 #[tauri::command]
 pub async fn get_search() -> Option<&'static Search> {
@@ -12,24 +13,13 @@ pub async fn get_search() -> Option<&'static Search> {
     return Some(x);
   }
 
-  let mut val = vec![];
-
   let comm = get_commit().await;
-  let mut total = get_total().await?;
+
+  let mut val = vec![];
+  let mut total = internet::get_total_maps(comm).await?;
 
   while total != 0 {
-    let mut s: Vec<SearchS> = CLIENT.get(
-      SEARCH_URL.replace("{sha}", comm).replace("{id}", &total.to_string())
-    )
-    .send()
-    .await
-    .ok()?
-    .json()
-    .await
-    .ok()?;
-
-    val.append(&mut s);
-
+    val.append(&mut internet::get_search(comm, &total.to_string()).await?);
     total -= 1;
   }
 
@@ -55,15 +45,7 @@ pub async fn get_map() -> Option<&'static Map> {
   let mut total = get_total().await?;
 
   while total != 0 {
-    let s: Map = CLIENT.get(
-      MAP_URL.replace("{sha}", comm).replace("{id}", &total.to_string())
-    )
-    .send()
-    .await
-    .ok()?
-    .json()
-    .await
-    .ok()?;
+    let s = internet::get_map(comm, &total.to_string()).await?;
 
     for (k, v) in s {
       val.insert(k, v);

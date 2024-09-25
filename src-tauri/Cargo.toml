@@ -1,8 +1,8 @@
 [package]
 name = "ahqstore-android"
-version = "0.0.1"
+version = "0.0.2"
 description = "A Tauri App"
-authors = ["you"]
+authors = ["AHQ Store"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -19,7 +19,9 @@ tauri = { version = "2.0.0-rc.0", features = ["rustls-tls"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", default-features = false, features = ["alloc"] }
 tauri-plugin-ahqstore = { path = "../src-plugin" }
-ahqstore-types = { version = "2.1.1", default-features = false }
+ahqstore-types = { version = "3.2.7", default-features = false, features = [
+  "internet",
+] }
 reqwest = { version = "0.12.5", default-features = false, features = [
   "json",
   "rustls-tls",

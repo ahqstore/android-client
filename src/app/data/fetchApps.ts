@@ -1,6 +1,9 @@
 import fetch from "./http";
 import { devUserUrl, get_app, get_search_data } from ".";
 
+import { AHQStoreApplication } from "ahqstore-types/ahqstore_types";
+import { invoke } from "@tauri-apps/api/core";
+
 interface AuthorObject {
   u_id: number;
   username: string;
@@ -12,41 +15,7 @@ interface AuthorObject {
   apps: string[];
 }
 
-type Str = string;
-
-interface appData {
-  appId: Str;
-  appShortcutName: Str;
-  appDisplayName: Str;
-  authorId: Str;
-  downloadUrls: {
-    [key: number]: {
-      installerType:
-      | "WindowsZip"
-      | "WindowsInstallerExe"
-      | "WindowsInstallerMsi"
-      | "WindowsUWPMsix"
-      | "LinuxAppImage";
-      url: Str;
-    };
-  };
-  install: {
-    win32: unknown | undefined;
-    linux: unknown | undefined;
-    android: unknown | undefined;
-  };
-  displayImages: Str[];
-  description: Str;
-  icon: Str;
-  repo: {
-    author: Str;
-    repo: Str;
-  };
-  version: Str;
-  site?: Str;
-  source?: Str;
-  AuthorObject: AuthorObject;
-}
+type appData = AHQStoreApplication;
 
 let cache: {
   [key: string]: appData;
@@ -132,6 +101,20 @@ async function resolveApps(apps: string[]): Promise<appData[]> {
   });
 
   return await Promise.all(promises);
+}
+
+export async function get_app_asset(appId: string, asset: number) {
+  return await invoke<Uint8Array>("get_app_asset", {
+    appId,
+    asset
+  });
+}
+
+export async function get_app_asset_url(appId: string, asset: number) {
+  return await invoke<string>("get_app_asset_url", {
+    appId,
+    asset
+  });
 }
 
 export type { appData };

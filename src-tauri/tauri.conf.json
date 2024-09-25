@@ -22,7 +22,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["msi", "app", "deb", "rpm", "appimage"],
+    "targets": [],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

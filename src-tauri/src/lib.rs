@@ -9,6 +9,7 @@ use tauri::{AppHandle, Runtime};
 use utils::*;
 use tauri::WebviewWindow;
 
+#[cfg(mobile)]
 use tauri_plugin_ahqstore::{AHQStorePluginExt, AHQStorePlugin, AppInstallResponse};
 
 use std::env::consts::ARCH;
@@ -33,7 +34,7 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            get_total, get_map, get_search, get_commit, get_app, get_home, load_apk, get_andy_build, get_os_info
+            get_total, get_map, get_search, get_commit, get_app_asset_url, get_app, get_home, load_apk, get_andy_build, get_os_info, get_app_asset
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -46,6 +47,9 @@ fn get_os_info() -> (&'static str, String) {
 
 #[tauri::command(async)]
 fn get_andy_build<R: Runtime>(app: AppHandle<R>) -> (u64, String) {
+    #[cfg(desktop)]
+    unimplemented!();
+
     let ahqstore: &AHQStorePlugin<R> = app.store_plugin();
 
     let info = ahqstore.get_android_build().unwrap();
@@ -54,6 +58,13 @@ fn get_andy_build<R: Runtime>(app: AppHandle<R>) -> (u64, String) {
 }
 
 #[tauri::command(async)]
+#[cfg(desktop)]
+fn load_apk() {
+    unimplemented!()
+}
+
+#[tauri::command(async)]
+#[cfg(mobile)]
 fn load_apk<R: Runtime>(app: AppHandle<R>, path: String) -> tauri_plugin_ahqstore::Result<AppInstallResponse> {
     let ahqstore: &AHQStorePlugin<R> = app.store_plugin();
 
