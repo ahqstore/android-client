@@ -1,10 +1,21 @@
 use serde::{Deserialize, Serialize};
 
-pub type InstallAppPath = String;
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct KotlinString {
+  pub data: String
+}
+
+pub type InstallAppPath = KotlinString;
 pub type IsInstalledStr = String;
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
-pub struct AppInstallResponse {
+pub struct InstalledAppsList {
+  apps: Vec<String>
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+pub struct KotlinInstallUninstallResponse {
   pub success: bool,
   pub msg: String
 }

@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use lazy_static::lazy_static;
-use ahqstore_types::{internet, AHQStoreApplication, Commit, APP_ASSET_URL};
+use ahqstore_types::{internet, AHQStoreApplication, APP_ASSET_URL};
 use reqwest::{Client, ClientBuilder};
 use runtime_cache::Val;
 
@@ -9,13 +9,14 @@ pub mod cache;
 pub mod db;
 mod runtime_cache;
 mod routes;
+pub mod downloader;
 
 static mut COMMIT: Option<String> = None;
 
 pub use routes::*;
 
 lazy_static! {
-  static ref CLIENT: Client = ClientBuilder::new()
+  pub static ref CLIENT: Client = ClientBuilder::new()
     .user_agent("AHQ Store Android")
     .build()
     .unwrap();

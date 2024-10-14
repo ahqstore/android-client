@@ -29,6 +29,14 @@ pub fn init_cache(app: &App) {
   }
 }
 
+pub fn apk_path(name: &str) -> String {
+  let cache = unsafe {
+    CACHE_DIR.as_ref().unwrap()
+  };
+
+  format!("{cache}/apk_installer_{name}.apk")
+}
+
 pub fn commit() -> String {
   let cache = unsafe {
     CACHE_DIR.as_ref().unwrap()

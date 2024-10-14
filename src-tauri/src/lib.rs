@@ -5,12 +5,13 @@ mod api;
 mod utils;
 
 use api::*;
-use tauri::{AppHandle, Runtime};
-use utils::*;
+use api::downloader::download_apk;
+use cache::apk_path;
+use tauri::AppHandle;
 use tauri::WebviewWindow;
 
 #[cfg(mobile)]
-use tauri_plugin_ahqstore::{AHQStorePluginExt, AHQStorePlugin, AppInstallResponse};
+use tauri_plugin_ahqstore::{KotlinString, InstallAppPath, InstalledAppsList, AHQStorePluginExt, AHQStorePlugin, KotlinInstallUninstallResponse};
 
 use std::env::consts::ARCH;
 
@@ -34,7 +35,7 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            get_total, get_map, get_search, get_commit, get_app_asset_url, get_app, get_home, load_apk, get_andy_build, get_os_info, get_app_asset
+            get_total, get_map, get_search, get_commit, get_app_asset_url, get_app, get_home, load_apk, get_andy_build, get_os_info, get_app_asset, download_apk, uninstall_apk, list_all_apps
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -46,27 +47,35 @@ fn get_os_info() -> (&'static str, String) {
 }
 
 #[tauri::command(async)]
-fn get_andy_build<R: Runtime>(app: AppHandle<R>) -> (u64, String) {
+fn get_andy_build(app: AppHandle) -> (u64, String) {
     #[cfg(desktop)]
     unimplemented!();
 
-    let ahqstore: &AHQStorePlugin<R> = app.store_plugin();
+    let ahqstore: &AHQStorePlugin<tauri::Wry> = app.store_plugin();
 
     let info = ahqstore.get_android_build().unwrap();
 
     (info.sdk, info.release)
 }
 
-#[tauri::command(async)]
-#[cfg(desktop)]
-fn load_apk() {
-    unimplemented!()
+#[tauri::command]
+async fn load_apk(app_handle: AppHandle, name: String) -> tauri_plugin_ahqstore::Result<KotlinInstallUninstallResponse> {
+    let ahqstore: &AHQStorePlugin<tauri::Wry> = app_handle.store_plugin();
+
+    let path = apk_path(&name);
+    ahqstore.install_apk(InstallAppPath { data: path })
 }
 
-#[tauri::command(async)]
-#[cfg(mobile)]
-fn load_apk<R: Runtime>(app: AppHandle<R>, path: String) -> tauri_plugin_ahqstore::Result<AppInstallResponse> {
-    let ahqstore: &AHQStorePlugin<R> = app.store_plugin();
+#[tauri::command]
+async fn uninstall_apk(app_handle: AppHandle, package: String) -> tauri_plugin_ahqstore::Result<KotlinInstallUninstallResponse> {
+    let ahqstore: &AHQStorePlugin<tauri::Wry> = app_handle.store_plugin();
 
-    ahqstore.install_apk(path)
+    ahqstore.uninstall_apk(KotlinString { data: package })
+}
+
+#[tauri::command]
+async fn list_all_apps(app_handle: AppHandle) -> tauri_plugin_ahqstore::Result<InstalledAppsList> {
+    let ahqstore: &AHQStorePlugin<tauri::Wry> = app_handle.store_plugin();
+
+    ahqstore.get_installed_apps()
 }

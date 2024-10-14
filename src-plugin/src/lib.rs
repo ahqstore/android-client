@@ -29,15 +29,9 @@ impl<R: Runtime, T: Manager<R>> crate::AHQStorePluginExt<R> for T {
   }
 }
 
-#[tauri::command]
-fn hello() -> &'static str {
-  "Hello World"
-}
-
 /// Initializes the plugin.
 pub fn init<R: Runtime>() -> TauriPlugin<R> {
   Builder::new("ahqstore")
-    .invoke_handler(tauri::generate_handler![hello])
     .setup(|app, api| {
       #[cfg(mobile)]
       let store_plugin = mobile::init(app, api)?;

@@ -22,14 +22,28 @@ pub fn init<R: Runtime, C: DeserializeOwned>(
 pub struct AHQStorePlugin<R: Runtime>(PluginHandle<R>);
 
 impl<R: Runtime> AHQStorePlugin<R> {
-  pub fn install_apk(&self, payload: InstallAppPath) -> crate::Result<AppInstallResponse> {
+  pub fn install_apk(&self, app_path: InstallAppPath) -> crate::Result<KotlinInstallUninstallResponse> {
     self
       .0
-      .run_mobile_plugin("install", payload)
+      .run_mobile_plugin("install", app_path)
       .map_err(Into::into)
   }
 
-  pub fn get_pkg_info(&self, app: &str) -> crate::Result<Option<AppData>> {
+  pub fn uninstall_apk(&self, app_package_name: KotlinString) -> crate::Result<KotlinInstallUninstallResponse> {
+    self
+      .0
+      .run_mobile_plugin("uninstall", app_package_name)
+      .map_err(Into::into)
+  }
+
+  pub fn get_installed_apps(&self) -> crate::Result<InstalledAppsList> {
+    self
+      .0
+      .run_mobile_plugin("getApps", None::<()>)
+      .map_err(Into::into)
+  }
+
+  pub fn get_pkg_info(&self, app: KotlinString) -> crate::Result<Option<AppData>> {
     self
       .0
       .run_mobile_plugin("getInstalledPkgInfo", app)

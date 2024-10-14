@@ -24,6 +24,8 @@ import App from "./app";
 import { setColorScheme } from "mdui/functions/setColorScheme";
 import { applyTheme } from './utils/theme';
 
+import "./utils/test"
+
 applyTheme();
 
 setInterval(() => {

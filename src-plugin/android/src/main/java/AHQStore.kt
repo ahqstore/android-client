@@ -1,5 +1,6 @@
 package com.plugin.ahqstore
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageInfo
@@ -7,37 +8,49 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
 import android.os.Build
+import android.webkit.WebView
+
 import androidx.core.content.FileProvider
 
 import app.tauri.annotation.Command
 import app.tauri.annotation.TauriPlugin
+import app.tauri.annotation.InvokeArg
 import app.tauri.plugin.Invoke
 import app.tauri.plugin.JSObject
 import app.tauri.plugin.Plugin
 
 import ru.solrudev.ackpine.installer.PackageInstaller
 import ru.solrudev.ackpine.installer.parameters.InstallParameters
+import ru.solrudev.ackpine.session.parameters.Confirmation
 import ru.solrudev.ackpine.session.SessionResult
 import ru.solrudev.ackpine.session.await
 
 import java.io.File
-import kotlin.coroutines.cancellation.CancellationException
 
-//fun getPkgFromFile(path: String, activity: Activity): PackageInfo? {
-//  try {
-//    val pkg = activity.baseContext.packageManager
-//
-//    val archive = pkg.getPackageArchiveInfo(path, PackageManager.GET_ACTIVITIES)
-//
-//    return archive
-//  } catch (e: Throwable) {
-//    return null
-//  }
-//}
+import kotlin.coroutines.cancellation.CancellationException
+import kotlinx.coroutines.*
+import ru.solrudev.ackpine.uninstaller.PackageUninstaller
+import ru.solrudev.ackpine.uninstaller.createSession
+import ru.solrudev.ackpine.uninstaller.parameters.UninstallParameters
+import java.util.Vector
+
+@InvokeArg
+class Data {
+  var data: String = ""
+}
+
+val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 
 @TauriPlugin
 class AHQStore(private val activity: Activity): Plugin(activity) {
   private var pkgInstaller: PackageInstaller? = null
+  private var pkgUninstaller: PackageUninstaller? = null
+
+  override fun load(webView: WebView) {
+    super.load(webView)
+
+    loadAHQStoreApps()
+  }
 
   @Command
   fun getAndroidBuild(invoke: Invoke) {
@@ -50,9 +63,41 @@ class AHQStore(private val activity: Activity): Plugin(activity) {
   }
 
   @Command
+  fun isAHQStorePackage(invoke: Invoke) {
+    isAHQStorePackage(invoke.parseArgs(String::class.java))
+  }
+
+  @Command
+  fun getApps(invoke: Invoke) {
+    val ret = JSObject()
+
+    val resp: List<String> = loadAHQStoreApps().map { data ->
+      data.packageName
+    }
+
+    ret.put("apps", resp)
+
+    invoke.resolve(ret)
+  }
+
+  @Command
+  fun install(invoke: Invoke) {
+    scope.launch {
+      installInner(invoke)
+    }
+  }
+
+  @Command
+  fun uninstall(invoke: Invoke) {
+    scope.launch {
+      uninstallInner(invoke)
+    }
+  }
+
+  @Command
   fun getInstalledPkgInfo(invoke: Invoke) {
     // pkgName is the package identifier
-    val pkgName = invoke.parseArgs(String::class.java)
+    val pkgName = invoke.parseArgs(Data::class.java).data
 
     try {
       val pkgMan = activity.baseContext.packageManager
@@ -70,9 +115,35 @@ class AHQStore(private val activity: Activity): Plugin(activity) {
     }
   }
 
-  @Command
-  suspend fun install(invoke: Invoke) {
-    val path = invoke.parseArgs(String::class.java)
+  @SuppressLint("QueryPermissionsNeeded")
+  private fun loadAHQStoreApps(): Vector<PackageInfo> {
+    val packageManager = activity.baseContext.packageManager
+
+    val packages: Vector<PackageInfo> = Vector()
+
+    for (application in packageManager.getInstalledPackages(0)) {
+      val name = application!!.packageName
+
+      if (isAHQStorePackage(name)) {
+        packages.add(application)
+      }
+    }
+
+    return packages
+  }
+
+  private fun isAHQStorePackage(pkg: String): Boolean {
+    val packageManager = activity.baseContext.packageManager
+
+    val source = packageManager.getInstallSourceInfo(pkg)
+
+    val initiated = source.initiatingPackageName
+
+    return initiated == "com.ahqstore.lite"
+  }
+
+  private suspend fun installInner(invoke: Invoke) {
+    val path = invoke.parseArgs(Data::class.java).data
 
     val apk = File(path)
 
@@ -90,6 +161,7 @@ class AHQStore(private val activity: Activity): Plugin(activity) {
 
     val ret = JSObject()
 
+    ret.put("success", false)
     if (apk.exists()) {
       try {
         val apkUri: Uri = FileProvider.getUriForFile(
@@ -98,24 +170,31 @@ class AHQStore(private val activity: Activity): Plugin(activity) {
           apk
         )
 
-        ret.put("success", false)
+        println("Got apk Uri")
 
         try {
-          when (val result = pkgInstaller!!.createSession(InstallParameters(apkUri) {}).await()) {
+          println("pkg installer")
+          when (val result = pkgInstaller!!.createSession(InstallParameters(apkUri) {
+            confirmation = Confirmation.IMMEDIATE
+          }).await()) {
             is SessionResult.Success -> {
               ret.put("success", true)
               ret.put("msg", "Success")
             }
             is SessionResult.Error -> {
+              println("Error ${result.toString()}")
               ret.put("msg", result.toString())
             }
           }
         } catch (_: CancellationException) {
+          println("Error Cancelled (u  s  e  r)")
           ret.put("msg", "The operation was cancelled")
         } catch (e: Exception) {
+          println("Error $e")
           ret.put("msg", "Error: ${e.message}")
         }
       } catch (e: Throwable) {
+        println("Error $e")
         ret.put("msg", e.message)
       }
     } else {
@@ -124,5 +203,34 @@ class AHQStore(private val activity: Activity): Plugin(activity) {
     }
 
     invoke.resolve(ret)
+  }
+
+  private suspend fun uninstallInner(invoke: Invoke) {
+    val packageString = invoke.parseArgs(Data::class.java).data
+    val resp = JSObject()
+
+    resp.put("success", false)
+
+    if (pkgUninstaller == null) {
+      pkgUninstaller = PackageUninstaller.getInstance(activity.baseContext)
+    }
+
+    try {
+      when (val res = pkgUninstaller!!.createSession(UninstallParameters(packageString) {
+        confirmation = Confirmation.IMMEDIATE
+      }).await()) {
+        is SessionResult.Success -> {
+          resp.put("success", true)
+          resp.put("msg", "Successful")
+        }
+        is SessionResult.Error -> {
+          resp.put("msg", res.toString())
+        }
+      }
+    } catch (e: Throwable) {
+      resp.put("msg", e.message)
+    }
+
+    invoke.resolve(resp)
   }
 }

@@ -1,7 +1,5 @@
-use std::collections::HashMap;
-
-use crate::{cache, get_commit, get_total};
-use ahqstore_types::internet;
+use crate::{cache, get_commit};
+use ahqstore_types::{internet, methods::OfficialManifestSource};
 
 use super::runtime_cache::{self, Map, Search, Val};
 
@@ -15,13 +13,7 @@ pub async fn get_search() -> Option<&'static Search> {
 
   let comm = get_commit().await;
 
-  let mut val = vec![];
-  let mut total = internet::get_total_maps(comm).await?;
-
-  while total != 0 {
-    val.append(&mut internet::get_search(comm, &total.to_string()).await?);
-    total -= 1;
-  }
+  let val = internet::get_all_search_by_source(OfficialManifestSource::AHQStore, comm).await?;
 
   runtime_cache::set("SEARCH_DATA".into(), Val::Search(val));
 
@@ -39,20 +31,8 @@ pub async fn get_map() -> Option<&'static Map> {
     return Some(x);
   }
 
-  let mut val = HashMap::new();
-
-  let comm = get_commit().await;
-  let mut total = get_total().await?;
-
-  while total != 0 {
-    let s = internet::get_map(comm, &total.to_string()).await?;
-
-    for (k, v) in s {
-      val.insert(k, v);
-    }
-
-    total -= 1;
-  }
+  let commit = get_commit().await;
+  let val = internet::get_all_maps_by_source(OfficialManifestSource::AHQStore, commit).await?;
 
   runtime_cache::set("APP_MAP_DATA".into(), Val::Map(val));
 

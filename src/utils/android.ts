@@ -19,7 +19,7 @@ export async function getAndroidData() {
   [0][1];
 
   cpu = cpuInfo;
-  console.log(cpu);
+
   arch = ar.replace("arm", "Arm 32-Bit (armv7)").replace("aarch64", "Arm 64-Bit (aarch64)").replace("i686", "x86 (i686)").replace("x86_64", "x64 (x86_64 / AMD64)");
   android = data;
 }

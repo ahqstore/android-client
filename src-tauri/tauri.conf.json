@@ -4,7 +4,7 @@
   "identifier": "com.ahqstore.lite",
   "build": {
     "beforeDevCommand": "",
-    "devUrl": "http://192.168.29.218:1420",
+    "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "pnpm build",
     "frontendDist": "../dist"
   },
@@ -31,7 +31,7 @@
       "icons/icon.ico"
     ],
     "android": {
-      "minSdkVersion": 29
+      "minSdkVersion": 30
     }
   }
 }

@@ -19,7 +19,7 @@ android {
     defaultConfig {
         manifestPlaceholders["usesCleartextTraffic"] = "false"
         applicationId = "com.ahqstore.lite"
-        minSdk = 29
+        minSdk = 30
         targetSdk = 34
         versionCode = tauriProperties.getProperty("tauri.android.versionCode", "1").toInt()
         versionName = tauriProperties.getProperty("tauri.android.versionName", "1.0")
@@ -59,7 +59,10 @@ rust {
 }
 
 dependencies {
-    implementation("androidx.webkit:webkit:1.11.0")
+  val ackpineVersion = "0.7.1"
+    implementation("ru.solrudev.ackpine:ackpine-core:$ackpineVersion")
+    implementation("ru.solrudev.ackpine:ackpine-ktx:$ackpineVersion")
+    implementation("androidx.webkit:webkit:1.12.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     testImplementation("junit:junit:4.13.2")
